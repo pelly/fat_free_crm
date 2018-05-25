@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2008-2013 Michael Dvorkin and contributors.
 #
 # Fat Free CRM is freely distributable under the terms of MIT license.
@@ -15,11 +17,11 @@ class String
   end
 
   def digitize
-    gsub(/[^\d]/, "")  # "$100,000".digitize # => 100000
+    gsub(/[^\d]/, "") # "$100,000".digitize # => 100000
   end
 
   def to_url
-    match(/^https?:\/\//) ? self : "http://" << self
+    match?(/^https?:\/\//) ? self : "http://#{self}"
   end
 
   def true?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2008-2013 Michael Dvorkin and contributors.
 #
 # Fat Free CRM is freely distributable under the terms of MIT license.
@@ -15,6 +17,6 @@ Ransack.configure do |config|
   config.ajax_options = {
     url: '/:controller/auto_complete.json',
     type: 'POST',
-    key: 'auto_complete_query'
+    key: 'term'
   }
 end
