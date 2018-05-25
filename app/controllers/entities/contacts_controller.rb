@@ -10,6 +10,7 @@ class ContactsController < EntitiesController
   #----------------------------------------------------------------------------
   def index
     @contacts = get_contacts(page: params[:page], per_page: params[:per_page])
+    @contacts = @contacts.includes(:account, :account_contact)
 
     respond_with @contacts do |format|
       format.xls { render layout: 'header' }
