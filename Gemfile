@@ -1,14 +1,20 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 # Uncomment the database that you have configured in config/database.yml
 # ----------------------------------------------------------------------
-db_drivers = {
-  "mysql" => "mysql2",
-  "sqlite" => "sqlite3",
-  "postgres" => "pg"
-}
 
-gem db_drivers[ENV['CI'] && ENV['DB']] || 'pg'
+case ENV['CI'] && ENV['DB']
+when 'sqlite'
+  gem 'sqlite3'
+when 'mysql'
+  gem 'mysql2'
+when 'postgres'
+  gem 'pg', '~> 0.21.0' # Pinned, see https://github.com/fatfreecrm/fat_free_crm/pull/689
+else
+  gem 'pg', '~> 0.21.0'
+end
 
 # Removes a gem dependency
 def remove(name)
@@ -38,7 +44,6 @@ remove 'fat_free_crm'
 group :development do
   # don't load these gems in travis
   unless ENV["CI"]
-    gem 'puma'
     gem 'capistrano'
     gem 'capistrano-bundler'
     gem 'capistrano-rails'
@@ -49,6 +54,7 @@ group :development do
     gem 'rb-inotify', require: false
     gem 'rb-fsevent', require: false
     gem 'rb-fchange', require: false
+    gem 'brakeman', require: false
   end
 end
 
@@ -59,9 +65,10 @@ group :development, :test do
   gem 'headless'
   gem 'byebug'
   gem 'pry-rails' unless ENV["CI"]
-  gem 'factory_girl_rails', '~> 4.7.0' # 4.8.0+ stubbed models are not allowed to access the database - User#destroyed?()
-  gem 'rubocop', '~> 0.50.0' # Pinned because upgrades require regenerating rubocop_todo.yml
+  gem 'factory_bot_rails'
+  gem 'rubocop', '~> 0.52.0' # Pinned because upgrades require regenerating rubocop_todo.yml
   gem 'rainbow'
+  gem 'puma' # used by capybara 3
 end
 
 group :test do
@@ -87,4 +94,7 @@ gem 'therubyracer', platform: :ruby unless ENV["CI"]
 gem 'nokogiri', '>= 1.8.1'
 gem 'activemodel-serializers-xml'
 gem 'bootsnap', require: false
+gem 'devise', '~>4.4.0'
+gem 'devise-i18n'
+gem "devise-encryptable"
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

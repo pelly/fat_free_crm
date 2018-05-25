@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2008-2013 Michael Dvorkin and contributors.
 #
 # Fat Free CRM is freely distributable under the terms of MIT license.
@@ -9,9 +11,9 @@ describe "/accounts/update" do
   include AccountsHelper
 
   before do
-    login_and_assign
+    login
 
-    assign(:account, @account = FactoryGirl.build_stubbed(:account, user: current_user))
+    assign(:account, @account = build_stubbed(:account, user: current_user))
     assign(:users, [current_user])
     assign(:account_category_total, Hash.new(1))
   end

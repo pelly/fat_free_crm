@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2008-2013 Michael Dvorkin and contributors.
 #
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class HomeController < ApplicationController
-  before_action :require_user, except: %i[toggle timezone]
+  skip_before_action :authenticate_user!, only: %i[timezone]
   before_action :set_current_tab, only: :index
 
   #----------------------------------------------------------------------------
@@ -45,10 +47,13 @@ class HomeController < ApplicationController
   # GET /home/toggle                                                       AJAX
   #----------------------------------------------------------------------------
   def toggle
-    if session[params[:id].to_sym]
-      session.delete(params[:id].to_sym)
-    else
-      session[params[:id].to_sym] = true
+    if (toggle_param = params[:id]&.to_sym)
+      session[:toggle_states] ||= {}
+      if session[:toggle_states][toggle_param]
+        session[:toggle_states].delete(toggle_param)
+      else
+        session[:toggle_states][toggle_param] = true
+      end
     end
     head :ok
   end
