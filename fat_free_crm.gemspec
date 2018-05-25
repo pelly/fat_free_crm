@@ -2,7 +2,8 @@
 
 $LOAD_PATH.push File.expand_path('../vendor/gems/globby-0.1.2/lib', __FILE__)
 require 'globby'
-rules = File.read("#{File.expand_path('..', __FILE__)}/.gitignore").split("\n")
+gitignore_file = "#{File.expand_path('..', __FILE__)}/.gitignore"
+rules = File.exists?(gitignore_file) ? File.read(gitignore_file).split("\n") : []
 rules << '.git'
 files = Globby.reject(rules)
 
