@@ -82,6 +82,7 @@ gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 gem 'execjs'
+gem 'tzinfo-data'
 gem 'therubyracer', platform: :ruby unless ENV["CI"]
 gem 'nokogiri', '>= 1.8.1'
 gem 'activemodel-serializers-xml'
